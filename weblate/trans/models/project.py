@@ -18,6 +18,7 @@
 #
 
 
+import logging
 import os
 import os.path
 
@@ -41,6 +42,7 @@ class ProjectQuerySet(models.QuerySet):
     def order(self):
         return self.order_by("name")
 
+_LOGGER = logging.getLogger(__name__)
 
 class Project(FastDeleteMixin, models.Model, URLMixin, PathMixin):
     ACCESS_PUBLIC = 0
@@ -176,6 +178,8 @@ class Project(FastDeleteMixin, models.Model, URLMixin, PathMixin):
 
         self.create_path()
 
+        _LOGGER.info(f"args: {args}")
+        _LOGGER.info(f"kwargs: {kwargs}")
         super().save(*args, **kwargs)
 
         # Reload components after source language change
